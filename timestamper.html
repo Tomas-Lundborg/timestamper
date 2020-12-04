@@ -1,0 +1,91 @@
+<!-- timestamper: Saving text entries (placemarks) with timestamp.
+    Copyright (C) 2020 Tomas Lundborg 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
+<html>
+<head>
+<script language="JavaScript" type="text/javascript">
+
+function getTimeStamp() {
+       var now = new Date();
+       return (now.getHours()*3600000+now.getMinutes()*60000+now.getSeconds()*1000+now.getMilliseconds());
+}
+
+function getFileDate() {
+       var now = new Date();
+       var y = addig(now.getYear()-100);
+       var m = addig(now.getMonth()); 
+       var d = addig(now.getDay()); 
+       var h = addig(now.getHours()); 
+       var i = addig(now.getMinutes());
+       var s = addig(now.getSeconds());
+       return(y + m + d + "-" + h + i + s);
+}
+
+function addig(n) {
+       if(n < 10)
+       {
+         return "0" + n.toString();
+       }
+       return n.toString();
+}
+
+function updatePlaceLog() {
+       localStorage.setItem("placemarks", localStorage.getItem("placemarks") + "\n" + getTimeStamp() + " " + document.getElementById("tagg").value);
+}
+
+function readPlaceLog() {
+       alert(localStorage.getItem("placemarks"));
+}
+
+function clearPlaceLog() {
+       if(confirm("Are you sure you want to clear the log?"))
+       {
+         localStorage.setItem("placemarks",Date()+" Cleared log");
+       }
+}
+
+function savePlaceLogFile(data, filename) {
+        var blob = new Blob([data], {type: 'text/plain'});
+            e    = document.createEvent('MouseEvents');
+            a    = document.createElement('a');
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+        a.dataset.downloadurl =  ['text/json', a.download, a.href].join(':');
+        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        a.dispatchEvent(e);
+}
+
+function filterText() {
+var input = document.getElementById("tagg");
+input.addEventListener("keydown", function(event) {
+    if (event.keyCode === 13) {
+        updatePlaceLog();
+    }
+});
+}
+</script>
+
+<td>
+<p>Enter location label, then press Enter:</p>
+<form id="js-form">
+  Location: <input type="text" onclick="filterText()" name="tagg" id="tagg">
+  <br>
+  <br>
+  <input type="button" onclick="readPlaceLog()" value="Read">
+  <input type="button" onclick="savePlaceLogFile(localStorage.getItem('placemarks'),'placemarks' + getFileDate() + '.txt')" value="Save">
+  <input type="button" onclick="clearPlaceLog()" value="Clear">
+</form>
+</td>
+</tr>
+</body>
