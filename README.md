@@ -1,11 +1,11 @@
 This tool is for entering descriptive text in real time, for later analysis: 
 Typical application is real time measurements like drive testing in cellular 
 systems, where text entries can be entered to describe the testers experience 
-(e.g. bus passing, pasing corner X etc.). The logged time stamp is then used 
+(e.g. bus passing, passing corner X etc.). The logged time stamp is then used 
 in the analysis phase, for better understanding of what is seen in the logged 
 measurement data. 
 
-The logged time stamps are in milliseconds from midnight. The log file also 
+The logged time stamps are in milliseconds from midnight. The log also 
 contains the date and time for the last time the timestamper log was cleared.
 
 When saving the time stamp, the file name is automatically generated in a format
